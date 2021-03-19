@@ -1,6 +1,6 @@
-//#include <nRF24L01.h>
+#include <nRF24L01.h>
 #include <RF24.h>
-
+#include <string.h>
 #define PIN_CE  9
 #define PIN_CSN 10
 
@@ -43,14 +43,14 @@ while (true)
   }
     if (radio.isAckPayloadAvailable()) {
         radio.read(&ackData, sizeof(ackData));
-      string FIFO;
+      String FIFO;
       for (uint8_t i = 0; i < sizeof(ackData); i++) {
         FIFO += ackData[i];
       }
       Serial.println(FIFO);
       if (radio.rxFifoFull()) {
-        cout << "Buffer full" << endl;
-        radio.flush_rx(); // очиска буфера
+          Serial.println("Buffer full");
+        radio.flush_rx();
       }
     }
   delay(1000);
