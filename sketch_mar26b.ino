@@ -1,4 +1,3 @@
-
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -31,11 +30,20 @@ void setup() {
 
   // Clear the buffer
   display.clearDisplay();
- 
-for(int i=0; i<127;i++)
+  uint8_t A[155][155] = {0};
+
+for(uint8_t i = 0; i<15; i++)
+  {
+  for(uint8_t j = 0; j<150; j++)
 {
-for(int j=0; j<31;j++)
+A[i][j] ={1};
+}}
+for(uint8_t i=0; i<127;i++)
 {
+for(uint8_t j=0; j<31;j++)
+{
+  int n = A[i][j];
+  
   display.drawPixel(i, j,SSD1306_WHITE);
 }}
   // Draw a single pixel in white
