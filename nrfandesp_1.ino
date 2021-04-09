@@ -1,32 +1,4 @@
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 by ThingPulse, Daniel Eichhorn
- * Copyright (c) 2018 by Fabrice Weinberg
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
- * ThingPulse invests considerable time and money to develop these open source libraries.
- * Please support us by buying our products (and not the clones) from
- * https://thingpulse.com
- *
- */
+
  
 // Include the correct display library
 
@@ -35,7 +7,6 @@
 #include "SSD1306Wire.h"        // legacy: #include "SSD1306.h"
 //#include <nRF24L01.h>
 #include <RF24.h>
-#include <string.h>
 
 
 #define PIN_CE  9
@@ -43,6 +14,10 @@
 
 uint8_t pipeNumber;
 uint8_t payloadSize;
+struct data
+{
+  String a,b,c;
+}dt;
 
 RF24 radio(PIN_CE, PIN_CSN);
 // OR #include "SH1106Wire.h"   // legacy: #include "SH1106.h"
@@ -150,16 +125,14 @@ void drawTextAlignmentDemo() {
   display.drawString(128, 33, "Right aligned (128,33)");
 }
 
-void drawRectDemo(uint8_t row, uint8_t col) {
+void drawRectDemo(int16_t row, int16_t col) {
       // Draw a pixel at given position
         
 
-A[row][col] = {1};
-
-uint8_t  a= 0;
-uint8_t  b= 0;
-uint8_t  c= 0;
-uint8_t  d= 0;
+uint8_t  a= 0; //left side
+uint8_t  b= 0; // right side
+uint8_t  c= 0; //top side
+uint8_t  d= 0; // down side
 uint8_t  l= 64+a-b;
 uint8_t  m= 32+c-d;
 
@@ -174,16 +147,6 @@ for(int j=0; j<63;j++)
   
 }
 
-void drawCircleDemo() {
-  for (int i=1; i < 8; i++) {
-    display.setColor(WHITE);
-    display.drawCircle(32, 32, i*3);
-    if (i % 2 == 0) {
-      display.setColor(BLACK);
-    }
-    display.fillCircle(96, 32, 32 - i* 3);
-  }
-}
 
 void drawProgressBarDemo() {
   int progress = (counter / 5) % 100;
@@ -197,8 +160,8 @@ void drawProgressBarDemo() {
 
 
 void loop() {
-  uint8_t x;
-  uint8_t y;
+  int16_t x;
+  int16_t y;
   String FIFO;
   char sep = {' '};
     while (true)
@@ -226,29 +189,33 @@ void loop() {
   delay(1000);
 
 }  
-
+int8_t q = 0;
+int8_t j = 0;
 // Get next command from Serial (add 1 for final 0)
-
-// Add the final 0 to end the C string
-// Read each command pair 
-String command = strtok(FIFO, " ");
-while (command != 0)
+for(int8_t i= 0; FIFO[i] != 0; i++)
 {
-    // Split the command in two values
-    char* separator = strchr(command, ':');
-    if (separator != 0)
-    {
-        // Actually split the string in 2: replace ':' with 0
-        *separator = 0;
-        int servoId = atoi(command);
-        ++separator;
-        int position = atoi(separator);
-
-        // Do something with servoId and position
+  if( FIFO[i] == ' ')
+  {
+    j=0;
+    q++;
+  }
+  if(q == 0)
+  {
+    dt.a[j] = FIFO[i];
     }
-    // Find the next command in input string
-    command = strtok(0, " ");
+    
+      if(q == 1)
+  {
+    dt.b[j] = FIFO[i];
+    }
+         if(q == 2)
+  {
+    dt.c[j] = FIFO[i];
+    }
 }
+
+x = dt.b.toInt();
+y = dt.c.toInt();
   
   // clear the display
   display.clear();
