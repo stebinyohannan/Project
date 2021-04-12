@@ -135,7 +135,7 @@ uint8_t  c= 0; //top side
 uint8_t  d= 0; // down side
 uint8_t  l= 64+a-b;
 uint8_t  m= 32+c-d;
-
+A[(64+row)][(32+col)] = 1;
 for(int i=0; i<127;i++)
 {
 for(int j=0; j<63;j++)
