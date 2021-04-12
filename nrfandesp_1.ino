@@ -56,7 +56,7 @@ SSD1306Wire display(0x3c, SDA, SCL);   // ADDRESS, SDA, SCL  -  SDA and SCL usua
 // or
 // SH1106Spi display(D0, D2);       // RES, DC
 
-uint8_t A[155][155] = {0};
+uint8_t A[160][100] = {0};
 #define DEMO_DURATION 3000
 typedef void (*Demo)(void);
 
@@ -133,16 +133,16 @@ uint8_t  a= 0; //left side
 uint8_t  b= 0; // right side
 uint8_t  c= 0; //top side
 uint8_t  d= 0; // down side
-uint8_t  l= 64+a-b;
-uint8_t  m= 32+c-d;
-A[(64+row)][(32+col)] = 1;
+uint8_t  l= 16+a-b;
+uint8_t  m= 18+c-d;
+A[(80+row)][(50+col)] = 1;
 for(int i=0; i<127;i++)
 {
 for(int j=0; j<63;j++)
 {
- if(A[(i)][(j)] ==1)
+ if(A[(l)][(m)] ==1)
  {
-  display.setPixel(i+l, j+m);
+  display.setPixel(i, j);
 }}}
   
 }
