@@ -1,8 +1,12 @@
 //#include <nRF24L01.h>
 //#include <RF24.h>
+#include <SPI.h>
 #include <Wire.h>               // Only needed for Arduino 1.6.5 and earlier
 #include "SSD1306Wire.h"        // legacy: #include "SSD1306.h"
-
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #include <RF24.h>
 #include<string>
 SSD1306Wire display(0x3c, SDA, SCL);   // ADDRESS, SDA, SCL  -  SDA and SCL usually populate automatically based on your board's pins_arduino.h
