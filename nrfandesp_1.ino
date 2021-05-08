@@ -9,9 +9,9 @@
 #include <RF24.h>
 
 
-#define PIN_CE  9
-#define PIN_CSN 10
-
+#define PIN_CE  0
+#define PIN_CSN 2
+#define Row 125
 uint8_t pipeNumber;
 uint8_t payloadSize;
 struct data
