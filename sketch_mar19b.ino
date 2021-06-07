@@ -28,6 +28,7 @@ void setup() {
 
 char text[] = "Hello world";
   char ackData[24];
+int a = 0;
   
 void loop() {
 
